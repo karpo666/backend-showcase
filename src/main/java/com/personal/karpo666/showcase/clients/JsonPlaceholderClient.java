@@ -1,9 +1,9 @@
-package com.personal.karpo666.identio.clients;
+package com.personal.karpo666.showcase.clients;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.personal.karpo666.identio.models.User;
+import com.personal.karpo666.showcase.models.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.HttpHeaders;

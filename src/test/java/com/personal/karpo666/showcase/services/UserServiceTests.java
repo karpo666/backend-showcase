@@ -1,9 +1,9 @@
-package com.personal.karpo666.identio.services;
+package com.personal.karpo666.showcase.services;
 
-import com.personal.karpo666.identio.FakeFactory;
-import com.personal.karpo666.identio.TestContainerTestResource;
-import com.personal.karpo666.identio.clients.JsonPlaceholderClient;
-import com.personal.karpo666.identio.models.User;
+import com.personal.karpo666.showcase.FakeFactory;
+import com.personal.karpo666.showcase.TestContainerTestResource;
+import com.personal.karpo666.showcase.clients.JsonPlaceholderClient;
+import com.personal.karpo666.showcase.models.User;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;

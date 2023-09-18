@@ -1,6 +1,6 @@
-package com.personal.karpo666.identio;
+package com.personal.karpo666.showcase;
 
-import com.personal.karpo666.identio.models.User;
+import com.personal.karpo666.showcase.models.User;
 
 import java.util.Map;
 

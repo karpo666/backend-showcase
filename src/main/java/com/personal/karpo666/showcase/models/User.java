@@ -1,4 +1,4 @@
-package com.personal.karpo666.identio.models;
+package com.personal.karpo666.showcase.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
