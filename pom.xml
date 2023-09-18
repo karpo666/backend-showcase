@@ -175,4 +175,10 @@
         </profile>
     </profiles>
 
+	<scm>
+		<connection>scm:git:git@github.com:karpo666/backend-showcase-jsonplaceholder.git</connection>
+		<developerConnection>scm:git:git@github.com:karpo666/backend-showcase-jsonplaceholder.git</developerConnection>
+		<url>https://github.com/karpo666/backend-showcase-jsonplaceholder</url>
+	</scm>
+
 </project>
