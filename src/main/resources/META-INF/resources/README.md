@@ -150,10 +150,3 @@ The application can be packaged using:
 ```shell script
 mvn package
 ```
-
-## Build docker image
-
-After packaging the project, you can build the docker image with:
-```shell
-docker build -f src/main/docker/Dockerfile -t {image.name}:{image.tag} .
-```
