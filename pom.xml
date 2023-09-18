@@ -5,7 +5,7 @@
 
     <groupId>com.personal.karpo666.showcase</groupId>
     <artifactId>backend-showcase-jsonplaceholder</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <properties>
         <compiler-plugin.version>3.11.0</compiler-plugin.version>
@@ -178,7 +178,7 @@
 		<connection>scm:git:git@github.com:karpo666/backend-showcase-jsonplaceholder.git</connection>
 		<developerConnection>scm:git:git@github.com:karpo666/backend-showcase-jsonplaceholder.git</developerConnection>
 		<url>https://github.com/karpo666/backend-showcase-jsonplaceholder</url>
-	  <tag>backend-showcase-jsonplaceholder-1.0.0</tag>
+	  <tag>v1.0.0</tag>
   </scm>
 
 </project>
