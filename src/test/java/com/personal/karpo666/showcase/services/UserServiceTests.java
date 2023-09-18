@@ -74,8 +74,6 @@ class UserServiceTests {
         var user = FakeFactory.newUser(userId);
         user.setUsername(newUsername);
 
-        user.setId(usersService.getUser(userId).id);
-
         usersService.updateExistingUser(user);
 
         final User updatedUser = usersService.getUser(userId);
@@ -100,5 +98,27 @@ class UserServiceTests {
         assertEquals(usersInJp + User.listAll().size(), allUsers.size());
 
         verify(client, times(1)).getUsers();
+    }
+
+    @Test
+    @Order(6)
+    void testUpdateUserNotFoundInMongo() throws Exception {
+        final String userId = "8";
+        final String newUsername = "COOL_MAN_77";
+        when(client.getUser(userId)).thenReturn(FakeFactory.newUser(userId));
+
+        var user = FakeFactory.newUserWithAdditionalInfo(userId);
+        user.setUsername(newUsername);
+
+        usersService.updateExistingUser(user);
+
+        final User updatedUser = usersService.getUser(userId);
+
+        assertNotNull(updatedUser);
+        assertEquals(newUsername, updatedUser.getUsername());
+        assertNotNull(updatedUser.getAdditionalInfo());
+        assertEquals(FakeFactory.AMOUNT_OF_DOGS_THEY_HOPE_TO_OWN_ONE_DAY, updatedUser.getAdditionalInfo().getAmountOfDogsTheyHopeToOwnOneDay());
+
+        verify(client, times(1)).getUser(userId);
     }
 }

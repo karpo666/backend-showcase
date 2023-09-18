@@ -30,7 +30,7 @@ For info about the REST apis, see [swagger](#swagger)
 
 Get a list of all users.
 
-> Role required: READER
+> Roles allowed: "admin", "user"
 
 ```mermaid
 sequenceDiagram
@@ -52,7 +52,7 @@ sequenceDiagram
 
 Get user with specific id.
 
-> Role required: READER
+> Roles allowed: "admin", "user"
 
 ```mermaid
 sequenceDiagram
@@ -77,7 +77,7 @@ sequenceDiagram
 
 Create new user.
 
-> Role required: ADMIN
+> Roles allowed: "admin"
 
 ```mermaid
 sequenceDiagram
@@ -96,7 +96,7 @@ sequenceDiagram
 
 Update existing user.
 
-> Role required: ADMIN
+> Roles allowed: "admin"
 
 ```mermaid
 sequenceDiagram
@@ -133,6 +133,8 @@ sequenceDiagram
 | quarkus.mongodb.connection-string | MongoDb connection-string.         |                                      |
 | quarkus.mongodb.database          | Name of the database we are using. | backend-showcase                     |
 | quarkus.oidc.auth-server-url      | Url for the oidc-provider server.  |                                      |
+| quarkus.oidc.client-id            | Oidc client id.                    |                                      |
+| quarkus.oidc.credentials.secret   | Oidc client secret.                |                                      |
 | json-placeholder.url.base         | Base url for JsonPlaceholder.      | https://jsonplaceholder.typicode.com |
 | json-placeholder.url.users        | Path for the users-endpoints.      | /users                               |
 
