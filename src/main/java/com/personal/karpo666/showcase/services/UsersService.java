@@ -72,6 +72,6 @@ public class UsersService {
         var existingUser = getUser(user.getUserId());
 
         user.setId(existingUser.id);
-        user.update();
+        user.persistOrUpdate();
     }
 }
