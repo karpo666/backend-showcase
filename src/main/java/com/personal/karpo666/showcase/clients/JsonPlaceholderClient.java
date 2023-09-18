@@ -33,9 +33,6 @@ public class JsonPlaceholderClient {
     @ConfigProperty(name = "json-placeholder.url.users", defaultValue = "/users")
     private String usersPath;
 
-    @ConfigProperty(name = "json-placeholder.url.posts", defaultValue = "/posts")
-    private String postsPath;
-
     @Inject
     ObjectMapper mapper;
 
