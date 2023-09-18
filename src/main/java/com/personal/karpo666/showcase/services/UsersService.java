@@ -1,8 +1,8 @@
-package com.personal.karpo666.identio.services;
+package com.personal.karpo666.showcase.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.personal.karpo666.identio.clients.JsonPlaceholderClient;
-import com.personal.karpo666.identio.models.User;
+import com.personal.karpo666.showcase.clients.JsonPlaceholderClient;
+import com.personal.karpo666.showcase.models.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -72,6 +72,6 @@ public class UsersService {
         var existingUser = getUser(user.getUserId());
 
         user.setId(existingUser.id);
-        user.update();
+        user.persistOrUpdate();
     }
 }

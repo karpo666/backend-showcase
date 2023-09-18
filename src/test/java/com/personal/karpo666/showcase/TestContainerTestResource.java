@@ -1,4 +1,4 @@
-package com.personal.karpo666.identio;
+package com.personal.karpo666.showcase;
 
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 import org.testcontainers.containers.MongoDBContainer;

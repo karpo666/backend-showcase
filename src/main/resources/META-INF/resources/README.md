@@ -30,7 +30,7 @@ For info about the REST apis, see [swagger](#swagger)
 
 Get a list of all users.
 
-> Roles allowed: "admin", "user"
+> Roles allowed: admin, user
 
 ```mermaid
 sequenceDiagram
@@ -52,7 +52,7 @@ sequenceDiagram
 
 Get user with specific id.
 
-> Roles allowed: "admin", "user"
+> Roles allowed: admin, user
 
 ```mermaid
 sequenceDiagram
@@ -77,7 +77,7 @@ sequenceDiagram
 
 Create new user.
 
-> Roles allowed: "admin"
+> Roles allowed: admin
 
 ```mermaid
 sequenceDiagram
@@ -96,7 +96,7 @@ sequenceDiagram
 
 Update existing user.
 
-> Roles allowed: "admin"
+> Roles allowed: admin
 
 ```mermaid
 sequenceDiagram
@@ -139,6 +139,7 @@ sequenceDiagram
 | json-placeholder.url.users        | Path for the users-endpoints.      | /users                               |
 
 
+
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
@@ -151,11 +152,4 @@ mvn quarkus:dev
 The application can be packaged using:
 ```shell script
 mvn package
-```
-
-## Build docker image
-
-After packaging the project, you can build the docker image with:
-```shell
-docker build -f src/main/docker/Dockerfile -t {image.name}:{image.tag} .
 ```

@@ -1,7 +1,7 @@
-package com.personal.karpo666.identio.clients;
+package com.personal.karpo666.showcase.clients;
 
-import com.personal.karpo666.identio.WireMockTestResource;
-import com.personal.karpo666.identio.models.User;
+import com.personal.karpo666.showcase.WireMockTestResource;
+import com.personal.karpo666.showcase.models.User;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;

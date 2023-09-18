@@ -1,9 +1,10 @@
-package com.personal.karpo666.identio.resources;
+package com.personal.karpo666.showcase.resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.personal.karpo666.identio.clients.JsonPlaceholderClient;
-import com.personal.karpo666.identio.models.User;
-import com.personal.karpo666.identio.services.UsersService;
+import com.personal.karpo666.showcase.clients.JsonPlaceholderClient;
+import com.personal.karpo666.showcase.models.User;
+import com.personal.karpo666.showcase.services.UsersService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -29,6 +30,7 @@ public class UsersResource {
 
     @GET
     @Path("/users")
+    @RolesAllowed({"user", "admin"})
     @Operation(
         summary = "Fetch all users.",
         description = "Get all users across JsonPlaceholder and mongodb."
@@ -55,6 +57,7 @@ public class UsersResource {
 
     @GET
     @Path("/user")
+    @RolesAllowed({"user", "admin"})
     @Operation(
         summary = "Fetch user with specific id.",
         description = "Search user with given id across JsonPlaceholder and mongodb."
@@ -87,6 +90,7 @@ public class UsersResource {
 
     @POST
     @Path("/user")
+    @RolesAllowed("admin")
     @Operation(
         summary = "Create new user.",
         description = "Create new user to mongodb."
@@ -107,6 +111,7 @@ public class UsersResource {
 
     @PATCH
     @Path("/user")
+    @RolesAllowed("admin")
     @Operation(
         summary = "Update existing user.",
         description = "Update existing user."

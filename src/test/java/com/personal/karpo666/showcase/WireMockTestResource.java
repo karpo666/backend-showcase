@@ -1,4 +1,4 @@
-package com.personal.karpo666.identio;
+package com.personal.karpo666.showcase;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;

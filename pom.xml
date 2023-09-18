@@ -1,12 +1,11 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.personal.karpo666.identio</groupId>
+    <groupId>com.personal.karpo666.showcase</groupId>
     <artifactId>backend-showcase-jsonplaceholder</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <properties>
         <compiler-plugin.version>3.11.0</compiler-plugin.version>
@@ -34,7 +33,7 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- Main quarkus dependencies. -->
+        <!-- Main quarkus dependencies -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-arc</artifactId>
@@ -50,6 +49,14 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-smallrye-openapi</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-oidc</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-health</artifactId>
         </dependency>
 
         <!-- Lombok -->
@@ -82,6 +89,16 @@
             <artifactId>mongodb</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-jacoco</artifactId>
+            <scope>test</scope>
+        </dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-test-keycloak-server</artifactId>
+			<scope>test</scope>
+		</dependency>
     </dependencies>
 
     <build>
@@ -156,5 +173,12 @@
             </properties>
         </profile>
     </profiles>
+
+	<scm>
+		<connection>scm:git:git@github.com:karpo666/backend-showcase-jsonplaceholder.git</connection>
+		<developerConnection>scm:git:git@github.com:karpo666/backend-showcase-jsonplaceholder.git</developerConnection>
+		<url>https://github.com/karpo666/backend-showcase-jsonplaceholder</url>
+	  <tag>v1.0.0</tag>
+  </scm>
 
 </project>

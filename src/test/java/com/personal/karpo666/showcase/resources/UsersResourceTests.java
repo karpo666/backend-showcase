@@ -1,14 +1,15 @@
-package com.personal.karpo666.identio.resources;
+package com.personal.karpo666.showcase.resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.personal.karpo666.identio.FakeFactory;
-import com.personal.karpo666.identio.clients.JsonPlaceholderClient;
-import com.personal.karpo666.identio.models.User;
-import com.personal.karpo666.identio.services.UsersService;
+import com.personal.karpo666.showcase.FakeFactory;
+import com.personal.karpo666.showcase.clients.JsonPlaceholderClient;
+import com.personal.karpo666.showcase.models.User;
+import com.personal.karpo666.showcase.services.UsersService;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.keycloak.client.KeycloakTestClient;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
@@ -32,14 +33,18 @@ class UsersResourceTests {
     @Inject
     ObjectMapper mapper;
 
+    KeycloakTestClient keycloakTestClient = new KeycloakTestClient();
+
     @Test
-    void testGetUsers() throws Exception {
+    void testGetAllUsers() throws Exception {
         when(usersService.getAllUsers()).thenReturn(Collections.nCopies(10, FakeFactory.newUser()));
+
         var resultString =
             given()
                 .when()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + keycloakTestClient.getAccessToken("alice"))
                 .get("/api/v1/users")
                 .then()
                 .statusCode(200)
@@ -56,7 +61,19 @@ class UsersResourceTests {
     }
 
     @Test
-    void testGetUsersNotFound() throws Exception {
+    void testGetAllUsersNoAuthentication() {
+        given()
+            .when()
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+            .get("/api/v1/users")
+            .then()
+            .statusCode(401)
+        ;
+    }
+
+    @Test
+    void testGetAllUsersNotFound() throws Exception {
         when(usersService.getAllUsers())
             .thenThrow(new JsonPlaceholderClient.JsonPlaceHolderRestException("No users found", 404))
         ;
@@ -65,6 +82,7 @@ class UsersResourceTests {
             .when()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + keycloakTestClient.getAccessToken("alice"))
             .get("/api/v1/users")
             .then()
             .statusCode(404)
@@ -74,12 +92,13 @@ class UsersResourceTests {
     }
 
     @Test
-    void testGetUsersJsonProcessingException() throws Exception {
+    void testGetAllUsersJsonProcessingException() throws Exception {
         when(usersService.getAllUsers()).thenThrow(JsonProcessingException.class);
         given()
             .when()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + keycloakTestClient.getAccessToken("alice"))
             .get("/api/v1/users")
             .then()
             .statusCode(500)
@@ -97,6 +116,7 @@ class UsersResourceTests {
                 .when()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + keycloakTestClient.getAccessToken("alice"))
                 .queryParam("id", userId)
                 .get("/api/v1/user")
                 .then()
@@ -111,11 +131,25 @@ class UsersResourceTests {
     }
 
     @Test
+    void testGetUserNoAuthentication() {
+        given()
+            .when()
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+            .queryParam("id", "TEST_USER_ID")
+            .get("/api/v1/user")
+            .then()
+            .statusCode(401)
+        ;
+    }
+
+    @Test
     void testGetUserEmptyUserId() {
         given()
             .when()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + keycloakTestClient.getAccessToken("alice"))
             .queryParam("id", "")
             .get("/api/v1/user")
             .then()
@@ -133,6 +167,7 @@ class UsersResourceTests {
             .when()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + keycloakTestClient.getAccessToken("alice"))
             .queryParam("id", "TEST")
             .get("/api/v1/user")
             .then()
@@ -151,6 +186,7 @@ class UsersResourceTests {
             .when()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + keycloakTestClient.getAccessToken("alice"))
             .queryParam("id", "TEST")
             .get("/api/v1/user")
             .then()
@@ -170,6 +206,7 @@ class UsersResourceTests {
                 .when()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + keycloakTestClient.getAccessToken("alice"))
                 .body(FakeFactory.newUser())
                 .post("/api/v1/user")
                 .then()
@@ -184,11 +221,39 @@ class UsersResourceTests {
     }
 
     @Test
+    void testCreateUserNoAuthentication() {
+        given()
+            .when()
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+            .body(FakeFactory.newUser())
+            .post("/api/v1/user")
+            .then()
+            .statusCode(401)
+        ;
+    }
+
+    @Test
+    void testCreateUserWrongRole() {
+        given()
+            .when()
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + keycloakTestClient.getAccessToken("bob"))
+            .body(FakeFactory.newUser())
+            .post("/api/v1/user")
+            .then()
+            .statusCode(403)
+        ;
+    }
+
+    @Test
     void testCreateUserUserIdNotNull() {
         given()
             .when()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + keycloakTestClient.getAccessToken("alice"))
             .body(FakeFactory.newUser("NOT_NULL"))
             .post("/api/v1/user")
             .then()
@@ -202,6 +267,8 @@ class UsersResourceTests {
             .when()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + keycloakTestClient.getAccessToken("alice"))
+            .header("Authorization", "Bearer " + keycloakTestClient.getAccessToken("alice"))
             .post("/api/v1/user")
             .then()
             .statusCode(400)
@@ -214,10 +281,38 @@ class UsersResourceTests {
             .when()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + keycloakTestClient.getAccessToken("alice"))
             .body(FakeFactory.newUser("TEST_ID"))
             .patch("/api/v1/user")
             .then()
             .statusCode(200)
+        ;
+    }
+
+    @Test
+    void testUpdateUserNoAuthentication() {
+        given()
+            .when()
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+            .body(FakeFactory.newUser("TEST_ID"))
+            .patch("/api/v1/user")
+            .then()
+            .statusCode(401)
+        ;
+    }
+
+    @Test
+    void testUpdateUserWrongRole() {
+        given()
+            .when()
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + keycloakTestClient.getAccessToken("bob"))
+            .body(FakeFactory.newUser("TEST_ID"))
+            .patch("/api/v1/user")
+            .then()
+            .statusCode(403)
         ;
     }
 
@@ -227,6 +322,7 @@ class UsersResourceTests {
             .when()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + keycloakTestClient.getAccessToken("alice"))
             .body(FakeFactory.newUser())
             .patch("/api/v1/user")
             .then()
@@ -240,6 +336,7 @@ class UsersResourceTests {
             .when()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + keycloakTestClient.getAccessToken("alice"))
             .body("")
             .patch("/api/v1/user")
             .then()
@@ -257,6 +354,7 @@ class UsersResourceTests {
             .when()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + keycloakTestClient.getAccessToken("alice"))
             .body(FakeFactory.newUser("TEST_ID"))
             .patch("/api/v1/user")
             .then()
@@ -274,6 +372,7 @@ class UsersResourceTests {
             .when()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + keycloakTestClient.getAccessToken("alice"))
             .body(FakeFactory.newUser("TEST_ID"))
             .patch("/api/v1/user")
             .then()

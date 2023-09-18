@@ -1,9 +1,9 @@
-package com.personal.karpo666.identio.services;
+package com.personal.karpo666.showcase.services;
 
-import com.personal.karpo666.identio.FakeFactory;
-import com.personal.karpo666.identio.TestContainerTestResource;
-import com.personal.karpo666.identio.clients.JsonPlaceholderClient;
-import com.personal.karpo666.identio.models.User;
+import com.personal.karpo666.showcase.FakeFactory;
+import com.personal.karpo666.showcase.TestContainerTestResource;
+import com.personal.karpo666.showcase.clients.JsonPlaceholderClient;
+import com.personal.karpo666.showcase.models.User;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
@@ -74,8 +74,6 @@ class UserServiceTests {
         var user = FakeFactory.newUser(userId);
         user.setUsername(newUsername);
 
-        user.setId(usersService.getUser(userId).id);
-
         usersService.updateExistingUser(user);
 
         final User updatedUser = usersService.getUser(userId);
@@ -100,5 +98,27 @@ class UserServiceTests {
         assertEquals(usersInJp + User.listAll().size(), allUsers.size());
 
         verify(client, times(1)).getUsers();
+    }
+
+    @Test
+    @Order(6)
+    void testUpdateUserNotFoundInMongo() throws Exception {
+        final String userId = "8";
+        final String newUsername = "COOL_MAN_77";
+        when(client.getUser(userId)).thenReturn(FakeFactory.newUser(userId));
+
+        var user = FakeFactory.newUserWithAdditionalInfo(userId);
+        user.setUsername(newUsername);
+
+        usersService.updateExistingUser(user);
+
+        final User updatedUser = usersService.getUser(userId);
+
+        assertNotNull(updatedUser);
+        assertEquals(newUsername, updatedUser.getUsername());
+        assertNotNull(updatedUser.getAdditionalInfo());
+        assertEquals(FakeFactory.AMOUNT_OF_DOGS_THEY_HOPE_TO_OWN_ONE_DAY, updatedUser.getAdditionalInfo().getAmountOfDogsTheyHopeToOwnOneDay());
+
+        verify(client, times(1)).getUser(userId);
     }
 }
