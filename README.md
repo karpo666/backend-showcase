@@ -8,7 +8,7 @@ The goal is to provide a secure REST api for reading and updating User info in [
 
 #### Swagger
 
-Swagger is provided at path `/q/openapi`.
+Swagger is provided at path `/swagger`.
 
 #### Documentation
 
